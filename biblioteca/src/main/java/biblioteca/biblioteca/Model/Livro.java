@@ -16,13 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Livro {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty("id")
-    private long id;
-
     @Column(name = "ds_ISBN", nullable = false)
     @JsonProperty("isbn")
-    private String isbn;
+    private Long isbn;
 
     @Column(name = "ds_titulo", nullable = false)
     @JsonProperty("titulo")

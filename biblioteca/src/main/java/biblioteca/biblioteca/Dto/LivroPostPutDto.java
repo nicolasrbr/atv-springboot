@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class LivroPostPutDto {
     @JsonProperty("isbn")
     @NotBlank(message = "ISBN do livro não pode ser vazio")
-    private String isbn;
+    private Long isbn;
 
     @JsonProperty("titulo")
     @NotBlank(message = "Título do livro não pode ser vazia")

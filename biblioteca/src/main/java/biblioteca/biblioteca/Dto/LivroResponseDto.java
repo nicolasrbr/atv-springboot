@@ -11,11 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LivroResponseDto {
-    @JsonProperty("id")
-    private Long id;
-
     @JsonProperty("isbn")
-    private String isbn;
+    private Long isbn;
 
     @JsonProperty("titulo")
     private String titulo;
