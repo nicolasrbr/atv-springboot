@@ -44,13 +44,23 @@ public class LivroCrudPadraoService implements LivroCrudService{
     }
     
     @Override
-    public LivroResponseDto buscarLivro(Long isbn) {
-        return paraResponseDto(obterLivroExistente(isbn));
-    }
+    public List<LivroResponseDto> buscarLivro(String isbn, String titulo) {
+        if (isbn != null && isbn.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Informe um trecho do ISBN válido");
+        }
+        if (titulo != null && titulo.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Informe um trecho do título válido");
+        }
+        if (isbn == null && titulo == null) {
+            return buscarTodosLivros();
+        }
 
-    @Override
-    public LivroResponseDto buscarLivro(String titulo) {
-        return paraResponseDto(obterLivroExistente(titulo));
+        return livroRepository.buscarPorIsbnOuTitulo(
+                        isbn == null ? null : isbn.trim(),
+                        titulo == null ? null : titulo.trim())
+                .stream()
+                .map(this::paraResponseDto)
+                .toList();
     }
 
     @Override
@@ -71,11 +81,6 @@ public class LivroCrudPadraoService implements LivroCrudService{
     private Livro obterLivroExistente(Long isbn) {
         return livroRepository.findById(isbn)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado"));
-    }
-
-    private Livro obterLivroExistente(String titulo) {
-        //Preciso implementar
-        return null;
     }
 
     private Autor obterAutorExistente(Long autorId) {

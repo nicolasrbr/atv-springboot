@@ -29,24 +29,12 @@ public class LivroV1Controller {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<LivroResponseDto>> buscarTodosLivros() {
+    public ResponseEntity<List<LivroResponseDto>> buscarLivro(
+            @RequestParam(required = false) String isbn,
+            @RequestParam(required = false) String titulo) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(livroCrudService.buscarTodosLivros());
-    }
-
-    @GetMapping(value = "", params = "titulo")
-    public ResponseEntity<LivroResponseDto> buscarLivro(@RequestParam String titulo) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(livroCrudService.buscarLivro(titulo));
-    }
-
-    @GetMapping("/{isbn}")
-    public ResponseEntity<LivroResponseDto> buscarLivro(@PathVariable Long isbn) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(livroCrudService.buscarLivro(isbn));
+                .body(livroCrudService.buscarLivro(isbn, titulo));
     }
 
     @PutMapping("/{isbn}")
