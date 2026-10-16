@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LivroRepository extends JpaRepository<Livro, Long> {
+public interface LivroRepository extends JpaRepository<Livro, String> {
 
     @Query("""
             SELECT livro FROM Livro livro
-            WHERE (:isbn IS NULL OR CAST(livro.isbn AS string) LIKE CONCAT('%', :isbn, '%'))
+            WHERE (:isbn IS NULL OR livro.isbn LIKE CONCAT('%', :isbn, '%'))
               AND (:titulo IS NULL OR LOWER(livro.titulo) LIKE LOWER(CONCAT('%', :titulo, '%')))
             """)
     List<Livro> buscarPorIsbnOuTitulo(

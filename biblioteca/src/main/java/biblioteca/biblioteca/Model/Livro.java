@@ -21,7 +21,7 @@ public class Livro {
     @Id
     @Column(name = "ds_ISBN", nullable = false)
     @JsonProperty("isbn")
-    private Long isbn;
+    private String isbn;
 
     @Column(name = "ds_titulo", nullable = false)
     @JsonProperty("titulo")

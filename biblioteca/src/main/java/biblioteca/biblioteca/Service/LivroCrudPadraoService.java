@@ -64,7 +64,7 @@ public class LivroCrudPadraoService implements LivroCrudService{
     }
 
     @Override
-    public LivroResponseDto atualizarLivro(Long isbn, LivroPostPutDto livroPostPutDto) {
+    public LivroResponseDto atualizarLivro(String isbn, LivroPostPutDto livroPostPutDto) {
         Livro livro = obterLivroExistente(isbn);
         livro.setTitulo(livroPostPutDto.getTitulo());
         livro.setAno(livroPostPutDto.getAno());
@@ -74,11 +74,11 @@ public class LivroCrudPadraoService implements LivroCrudService{
     }
 
     @Override
-    public void removerLivro(Long isbn) {
+    public void removerLivro(String isbn) {
         livroRepository.delete(obterLivroExistente(isbn));
     }
 
-    private Livro obterLivroExistente(Long isbn) {
+    private Livro obterLivroExistente(String isbn) {
         return livroRepository.findById(isbn)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado"));
     }

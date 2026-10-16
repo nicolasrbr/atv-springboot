@@ -39,7 +39,7 @@ public class LivroV1Controller {
 
     @PutMapping("/{isbn}")
     public ResponseEntity<LivroResponseDto> atualizarLivro(
-            @PathVariable Long isbn,
+            @PathVariable String isbn,
             @RequestBody @Valid LivroPostPutDto livroPostPutDto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -47,7 +47,7 @@ public class LivroV1Controller {
     }
 
     @DeleteMapping("/{isbn}")
-    public ResponseEntity<Void> removerLivro(@PathVariable Long isbn) {
+    public ResponseEntity<Void> removerLivro(@PathVariable String isbn) {
         livroCrudService.removerLivro(isbn);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
