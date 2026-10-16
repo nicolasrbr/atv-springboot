@@ -1,12 +1,15 @@
 package biblioteca.biblioteca.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Builder
@@ -31,5 +34,12 @@ public class Livro {
     @Column(name = "ds_edicao", nullable = false)
     @JsonProperty("edicao")
     private int edicao;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_autor", nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Autor autor;
 
 }

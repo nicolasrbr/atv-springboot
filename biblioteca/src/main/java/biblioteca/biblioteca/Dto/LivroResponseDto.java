@@ -22,4 +22,7 @@ public class LivroResponseDto {
 
     @JsonProperty("edicao")
     private int edicao;
+
+    @JsonProperty("autorId")
+    private Long autorId;
 }

@@ -10,7 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import biblioteca.biblioteca.Dto.LivroPostPutDto;
 import biblioteca.biblioteca.Dto.LivroResponseDto;
+import biblioteca.biblioteca.Model.Autor;
 import biblioteca.biblioteca.Model.Livro;
+import biblioteca.biblioteca.Repository.AutorRepository;
 import biblioteca.biblioteca.Repository.LivroRepository;
 
 @Service
@@ -22,29 +24,33 @@ public class LivroCrudPadraoService implements LivroCrudService{
     @Autowired
     LivroRepository livroRepository;
 
+    @Autowired
+    AutorRepository autorRepository;
+
 
     @Override
     public LivroResponseDto criarLivro(LivroPostPutDto livroPostPutDto) {
         Livro livro = modelMapper.map(livroPostPutDto, Livro.class);
-        return modelMapper.map(livroRepository.save(livro), LivroResponseDto.class);
+        livro.setAutor(obterAutorExistente(livroPostPutDto.getAutorId()));
+        return paraResponseDto(livroRepository.save(livro));
     }
 
     @Override
     public List<LivroResponseDto> buscarTodosLivros() {
         return livroRepository.findAll()
                 .stream()
-                .map(livro -> modelMapper.map(livro, LivroResponseDto.class))
+                .map(this::paraResponseDto)
                 .toList();
     }
     
     @Override
     public LivroResponseDto buscarLivro(Long isbn) {
-        return modelMapper.map(obterLivroExistente(isbn), LivroResponseDto.class);
+        return paraResponseDto(obterLivroExistente(isbn));
     }
 
     @Override
     public LivroResponseDto buscarLivro(String titulo) {
-        return modelMapper.map(obterLivroExistente(titulo), LivroResponseDto.class);
+        return paraResponseDto(obterLivroExistente(titulo));
     }
 
     @Override
@@ -53,7 +59,8 @@ public class LivroCrudPadraoService implements LivroCrudService{
         livro.setTitulo(livroPostPutDto.getTitulo());
         livro.setAno(livroPostPutDto.getAno());
         livro.setEdicao(livroPostPutDto.getEdicao());
-        return modelMapper.map(livroRepository.save(livro), LivroResponseDto.class);
+        livro.setAutor(obterAutorExistente(livroPostPutDto.getAutorId()));
+        return paraResponseDto(livroRepository.save(livro));
     }
 
     @Override
@@ -69,5 +76,16 @@ public class LivroCrudPadraoService implements LivroCrudService{
     private Livro obterLivroExistente(String titulo) {
         //Preciso implementar
         return null;
+    }
+
+    private Autor obterAutorExistente(Long autorId) {
+        return autorRepository.findById(autorId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Autor não encontrado"));
+    }
+
+    private LivroResponseDto paraResponseDto(Livro livro) {
+        LivroResponseDto responseDto = modelMapper.map(livro, LivroResponseDto.class);
+        responseDto.setAutorId(livro.getAutor().getId());
+        return responseDto;
     }
 }

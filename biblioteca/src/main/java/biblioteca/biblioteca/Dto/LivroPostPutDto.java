@@ -28,4 +28,8 @@ public class LivroPostPutDto {
     @JsonProperty("edicao")
     @NotNull(message = "Edição do livro não pode ser vazia")
     private Integer edicao;
+
+    @JsonProperty("autorId")
+    @NotNull(message = "ID do autor não pode ser vazio")
+    private Long autorId;
 }
